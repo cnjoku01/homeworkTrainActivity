@@ -17,15 +17,22 @@ var destination = "";
 var startTime = "";
 var frequency = 0
 
+function currentTime() {
+  var current = moment().format('LT');
+  $("#currentTime").html(current);
+  setTimeout(currentTime, 1000);
+};
+
+
 // 2. Button for adding Employees
 $("#run-search").on("click", function(event) {
   event.preventDefault();
 
   // Grabs user input
-   trainName = $("#train-name").val().trim();
-   destination = $("#destination").val().trim();
-   startTime = $("#first-train").val().trim();
-   frequency = $("#frequency").val().trim();
+  var trainName = $("#train-name").val().trim();
+  var  destination = $("#destination").val().trim();
+  var  startTime = $("#first-train").val().trim();
+  var frequency = $("#frequency").val().trim();
 
   // Creates local "temporary" object for holding train data
   var newTrain = {
@@ -63,7 +70,7 @@ database.ref("/peeps").on("child_added", function(childSnapshot) {
   var timeRemain = timeDiff % childSnapshot.val().frequency;
   var minToArrival = childSnapshot.val().frequency - timeRemain;
   var nextTrain = moment().add(minToArrival, "minutes");
-  nextTrain = moment(nextTrain).format("hh:mm");
+  nextTrain = moment().format("hh:mm");
 
   trainName = childSnapshot.val().trainName;
   destination = childSnapshot.val().destination;
@@ -80,18 +87,18 @@ database.ref("/peeps").on("child_added", function(childSnapshot) {
 
 
   //Create the new row
-  // var newrow = $("<tr>");
-  // newrow.append($("<td>" + childSnapshot.val().trainName + "</td>"));
-  // newrow.append($("<td>" + childSnapshot.val().destination + "</td>"));
-  // newrow.append($("<td class='text-center'>" + childSnapshot.val().frequency + "</td>"));
-  // newrow.append($("<td class='text-center'>" + moment(nextTrain).format("LT") + "</td>"));
-  // newrow.append($("<td class='text-center'>" + minToArrival + "</td>"));
-  // newrow.append($("<td class='text-center'><button class='arrival btn btn-danger btn-xs' data-key='" + key + "'>X</button></td>"));
+  var newrow = $("<tr>");
+  newrow.append($("<td>" + childSnapshot.val().trainName + "</td>"));
+  newrow.append($("<td>" + childSnapshot.val().destination + "</td>"));
+  newrow.append($("<td class='text-center'>" + childSnapshot.val().frequency + "</td>"));
+  newrow.append($("<td class='text-center'>" + moment(nextTrain).format("LT") + "</td>"));
+  newrow.append($("<td class='text-center'>" + minToArrival + "</td>"));
+  newrow.append($("<td class='text-center'><button class='arrival btn btn-danger btn-xs' data-key='" + key + "'>X</button></td>"));
+
 
 
   // // Append the new row to the table
-  // $("#train-table-rows > tbody").append(newrow);
+  $("#train-table > tbody").append(newrow);
 
-  $("#train-table").append("<tr><td>" + childSnapshot.val().name + "</td><td>" + childSnapshot.val().destination + "</td><td>" + childSnapshot.val().frequency + "</td><td>" + nextTrain +  "</td><td>" + minToArrival + "</td></tr>");
+  // $("#train-table").append("<tr><td>" + childSnapshot.val().name + "</td><td>" + childSnapshot.val().destination + "</td><td>" + childSnapshot.val().frequency + "</td><td>" + nextTrain +  "</td><td>" + minToArrival + "</td></tr>");
 });
-
