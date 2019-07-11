@@ -66,6 +66,7 @@ database.ref("/peeps").on("child_added", function(childSnapshot) {
 
   // Store everything into a variable.
   var startTimeConverted = moment(childSnapshot.val().startTime, "hh:mm").subtract(1, "years");
+  console.log(startTimeConverted)
   var timeDiff = moment().diff(moment(startTimeConverted), "minutes");
   var timeRemain = timeDiff % childSnapshot.val().frequency;
   var minToArrival = childSnapshot.val().frequency - timeRemain;
@@ -93,7 +94,6 @@ database.ref("/peeps").on("child_added", function(childSnapshot) {
   newrow.append($("<td class='text-center'>" + childSnapshot.val().frequency + "</td>"));
   newrow.append($("<td class='text-center'>" + moment(nextTrain).format("LT") + "</td>"));
   newrow.append($("<td class='text-center'>" + minToArrival + "</td>"));
-  newrow.append($("<td class='text-center'><button class='arrival btn btn-danger btn-xs' data-key='" + key + "'>X</button></td>"));
 
 
 
