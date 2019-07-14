@@ -65,13 +65,13 @@ database.ref("/peeps").on("child_added", function(childSnapshot) {
   console.log(childSnapshot.val());
 
   // Store everything into a variable.
-  var startTimeConverted = moment(childSnapshot.val().startTime, "hh:mm").subtract(1, "years");
+  var startTimeConverted = moment(childSnapshot.val().startTime, "hh:mm");
   console.log(startTimeConverted)
   var timeDiff = moment().diff(moment(startTimeConverted), "minutes");
   var timeRemain = timeDiff % childSnapshot.val().frequency;
   var minToArrival = childSnapshot.val().frequency - timeRemain;
-  var nextTrain = moment().add(minToArrival, "minutes");
-  nextTrain = moment().format("hh:mm");
+  var nextTrain = moment().add(minToArrival, "minutes").format("hh:mm A");
+  // nextTrain = moment().format("hh:mm");
 
   trainName = childSnapshot.val().trainName;
   destination = childSnapshot.val().destination;
@@ -92,7 +92,7 @@ database.ref("/peeps").on("child_added", function(childSnapshot) {
   newrow.append($("<td>" + childSnapshot.val().trainName + "</td>"));
   newrow.append($("<td>" + childSnapshot.val().destination + "</td>"));
   newrow.append($("<td class='text-center'>" + childSnapshot.val().frequency + "</td>"));
-  newrow.append($("<td class='text-center'>" + moment(nextTrain).format("LT") + "</td>"));
+  newrow.append($("<td class='text-center'>" + moment(nextTrain,"hh:mm").format("LT") + "</td>"));
   newrow.append($("<td class='text-center'>" + minToArrival + "</td>"));
 
 
